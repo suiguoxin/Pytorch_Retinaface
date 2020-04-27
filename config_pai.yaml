@@ -1,0 +1,44 @@
+protocolVersion: 2
+name: RetinaFace_Auto_Compression
+type: job
+jobRetryCount: 0
+prerequisites:
+  - type: dockerimage
+    uri: 'openpai/standard:python_3.6-pytorch_1.2.0-gpu'
+    name: docker_image_0
+taskRoles:
+  taskrole:
+    instances: 1
+    completion:
+      minFailedInstances: 1
+      minSucceededInstances: -1
+    taskRetryCount: 0
+    dockerImage: docker_image_0
+    resourcePerInstance:
+      gpu: 1
+      cpu: 4
+      memoryMB: 8192
+    commands:
+      - apt update
+      - apt install libxrender1 libsm6 libxext6 cython -y
+      - cd /
+      - 'git clone https://github.com/suiguoxin/Pytorch_Retinaface.git'
+      - cd Pytorch_Retinaface
+      - ln -s /mnt/nfs-storage/users/sgx/Retinaface/weights /Pytorch_Retinaface
+      - ln -s /mnt/nfs-storage/users/sgx/Retinaface/data/widerface /Pytorch_Retinaface/data
+      - pip install opencv-python Cython
+      - python test_widerface.py --trained_model "./weights/mobilenet0.25_Final.pth" --network mobile0.25
+      - cd ./widerface_evaluate
+      - python setup.py build_ext --inplace
+      - python evaluation.py
+defaults:
+  virtualCluster: default
+extras:
+  com.microsoft.pai.runtimeplugin:
+    - plugin: ssh
+      parameters:
+        jobssh: true
+    - plugin: teamwise_storage
+      parameters:
+        storageConfigNames:
+          - nfs-storage
