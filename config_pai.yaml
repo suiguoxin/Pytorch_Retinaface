@@ -27,10 +27,7 @@ taskRoles:
       - ln -s /mnt/nfs-storage/users/sgx/Retinaface/weights /Pytorch_Retinaface
       - ln -s /mnt/nfs-storage/users/sgx/Retinaface/data/widerface /Pytorch_Retinaface/data
       - pip install opencv-python Cython
-      - python test_widerface.py --trained_model "./weights/mobilenet0.25_Final.pth" --network mobile0.25
-      - cd ./widerface_evaluate
-      - python setup.py build_ext --inplace
-      - python evaluation.py
+      - python evaluator.py
 defaults:
   virtualCluster: default
 extras:

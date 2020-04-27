@@ -5,6 +5,4 @@ cmd = 'python test_widerface.py --trained_model "./weights/mobilenet0.25_Final.p
     && python setup.py build_ext --inplace \
     && python evaluation.py'
 
-
-
 os.system(cmd)
