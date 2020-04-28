@@ -4,7 +4,7 @@ type: job
 jobRetryCount: 0
 prerequisites:
   - type: dockerimage
-    uri: 'openpai/standard:python_3.6-pytorch_1.2.0-gpu'
+    uri: 'gusui/nni:sapruner'
     name: docker_image_0
 taskRoles:
   taskrole:
@@ -21,8 +21,9 @@ taskRoles:
     commands:
       - apt update
       - apt install libxrender1 libsm6 libxext6 cython -y
-      - cd /
-      - 'git clone https://github.com/suiguoxin/Pytorch_Retinaface.git'
+      # - cd / && git clone -b sapruner https://github.com/suiguoxin/nni/
+      # - cd nni && ./install.sh
+      - cd / && git clone https://github.com/suiguoxin/Pytorch_Retinaface.git
       - cd Pytorch_Retinaface
       - ln -s /mnt/nfs-storage/users/sgx/Retinaface/weights /Pytorch_Retinaface
       - ln -s /mnt/nfs-storage/users/sgx/Retinaface/data/widerface /Pytorch_Retinaface/data

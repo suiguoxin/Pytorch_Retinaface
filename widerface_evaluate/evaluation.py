@@ -280,11 +280,8 @@ def evaluation(pred, gt_path, iou_thresh=0.5):
     print("Hard   Val AP: {}".format(aps[2]))
     print("=================================================")
 
-    import csv
-    with open('/mnt/nfs-storage/users/sgx/Retinaface/evaluation_result.csv', 'w') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=['easy', 'medium', 'hard'])
-        writer.writeheader()
-        writer.writerow({'easy' : aps[0], 'medium' : aps[1], 'hard' : aps[2]})
+    with open('/mnt/nfs-storage/users/sgx/Retinaface/result/evaluation_result.json', 'w') as outfile:
+        json.dumps({'easy':aps[0], 'medium':aps[1], 'hard':aps[2]}, outfile)
 
 if __name__ == '__main__':
 
