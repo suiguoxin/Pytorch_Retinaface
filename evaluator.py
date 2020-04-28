@@ -1,4 +1,5 @@
 import os
+import argparse
 
 from nni.compression.torch import SimulatedAnnealingPruner
 
