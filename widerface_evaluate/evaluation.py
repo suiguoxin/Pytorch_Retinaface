@@ -6,6 +6,7 @@ copyright@wondervictor
 """
 
 import os
+import json
 import tqdm
 import pickle
 import argparse
@@ -224,7 +225,7 @@ def voc_ap(rec, prec):
     return ap
 
 
-def evaluation(pred, gt_path, iou_thresh=0.5):
+def evaluation(pred, gt_path, iou_thresh=0.5, experiment_data_dir=''):
     pred = get_preds(pred)
     norm_score(pred)
     facebox_list, event_list, file_list, hard_gt_list, medium_gt_list, easy_gt_list = get_gt_boxes(gt_path)
@@ -280,26 +281,16 @@ def evaluation(pred, gt_path, iou_thresh=0.5):
     print("Hard   Val AP: {}".format(aps[2]))
     print("=================================================")
 
-    with open('/mnt/nfs-storage/users/sgx/Retinaface/result/evaluation_result.json', 'w') as outfile:
-        json.dumps({'easy':aps[0], 'medium':aps[1], 'hard':aps[2]}, outfile)
+    with open(os.path.join(experiment_data_dir, 'evaluation_result.json'), 'w') as outfile:
+        json.dump({'easy':aps[0], 'medium':aps[1], 'hard':aps[2]}, outfile)
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--pred', default="./widerface_txt/")
     parser.add_argument('-g', '--gt', default='./ground_truth/')
+    parser.add_argument('-e', '--experiment-data-dir', default='/mnt/nfs-storage/users/sgx/Retinaface')
 
     args = parser.parse_args()
-    evaluation(args.pred, args.gt)
 
-
-
-
-
-
-
-
-
-
-
-
+    evaluation(args.pred, args.gt, args.experiment_data_dir)

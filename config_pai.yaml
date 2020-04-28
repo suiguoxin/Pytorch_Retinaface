@@ -25,8 +25,8 @@ taskRoles:
       - cd Pytorch_Retinaface
       - ln -s /mnt/nfs-storage/users/sgx/Retinaface/weights /Pytorch_Retinaface
       - ln -s /mnt/nfs-storage/users/sgx/Retinaface/data/widerface /Pytorch_Retinaface/data
-      - pip install opencv-python Cython
-      - python evaluator.py
+      - pip install opencv-python Cython ipython
+      - python3 pruning.py --sparsity 0.3 --cool-down-rate 0.9 --experiment-data-dir /mnt/nfs-storage/users/sgx/Retinaface/experiment_data/03/ 
 defaults:
   virtualCluster: default
 extras:

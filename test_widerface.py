@@ -14,6 +14,12 @@ from utils.timer import Timer
 
 
 parser = argparse.ArgumentParser(description='Retinaface')
+
+parser.add_argument('--sparsity', type=float, default=0.3, help='sparsity')
+parser.add_argument('--cool-down-rate', type=float, default=0.9, help='cool down rate')
+parser.add_argument('--experiment-data-dir', type=str,
+                    default='/mnt/nfs-storage/users/sgx/Retinaface/experiment_data/', help='For saving experiment data')
+
 parser.add_argument('-m', '--trained_model', default='./weights/Resnet50_Final.pth',
                     type=str, help='Trained state_dict file path to open')
 parser.add_argument('--network', default='resnet50', help='Backbone network mobile0.25 or resnet50')
