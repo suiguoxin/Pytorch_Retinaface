@@ -16,10 +16,10 @@ def evaluate(trained_model, network):
     float
         evaluation result
     '''
-    cmd = 'python test_widerface.py --trained_model "{}" --network {} \
+    cmd = 'python3 test_widerface.py --trained_model "{}" --network {} \
         && cd ./widerface_evaluate \
-        && python setup.py build_ext --inplace \
-        && python evaluation.py'.format(trained_model, network)
+        && python3 setup.py build_ext --inplace \
+        && python3 evaluation.py'.format(trained_model, network)
 
     os.system(cmd)
 
