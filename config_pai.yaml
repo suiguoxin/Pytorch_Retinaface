@@ -20,9 +20,7 @@ taskRoles:
       memoryMB: 8192
     commands:
       - apt update
-      - apt install libxrender1 libsm6 libxext6 cython -y
-      # - cd / && git clone -b sapruner https://github.com/suiguoxin/nni/
-      # - cd nni && ./install.sh
+      - apt install libxrender1 libsm6 libxext6 libgtk2.0-dev cython -y
       - cd / && git clone https://github.com/suiguoxin/Pytorch_Retinaface.git
       - cd Pytorch_Retinaface
       - ln -s /mnt/nfs-storage/users/sgx/Retinaface/weights /Pytorch_Retinaface

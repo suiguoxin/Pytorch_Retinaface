@@ -1,5 +1,6 @@
 import os
 import argparse
+import torch
 
 from nni.compression.torch import SimulatedAnnealingPruner
 
@@ -73,7 +74,7 @@ if __name__ == '__main__':
     }]
 
     pruner = SimulatedAnnealingPruner(
-        model, configure_list, evaluator=evaluator, cool_down_rate=0.9, experiment_data_dir=args.experiment_data_dir)
+        model, configure_list, evaluator=evaluator, cool_down_rate=0.1, experiment_data_dir=args.experiment_data_dir)
     pruner.compress()
 
     pruner.export_model('{}model.pth'.format(
