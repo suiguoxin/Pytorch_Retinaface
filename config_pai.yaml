@@ -1,5 +1,5 @@
 protocolVersion: 2
-name: RetinaFace_Auto_Compression
+name: RetinaFace_Auto_Compression_test_test
 type: job
 jobRetryCount: 0
 prerequisites:
