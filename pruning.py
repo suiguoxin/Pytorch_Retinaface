@@ -26,7 +26,7 @@ def evaluate(trained_model, network, experiment_data_dir):
     # cmd = 'python3 test_widerface.py --trained_model "{}" --network {} \
     #     && cd ./widerface_evaluate \
     #     && python3 setup.py build_ext --inplace \
-    #     && python3 evaluation.py --experiment_data_dir {}'.format(trained_model, network, experiment_data_dir)
+    #     && python3 evaluation.py -e {}'.format(trained_model, network, experiment_data_dir)
     
     cmd = 'cd ./widerface_evaluate \
         && python3 setup.py build_ext --inplace \
