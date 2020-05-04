@@ -23,7 +23,7 @@ def evaluate(trained_model, network, experiment_data_dir):
     json
         evaluation result
     '''
-    cmd = 'python3 test_widerface.py --trained_model "{}" --network {} --test_rate 0.1\
+    cmd = 'python3 test_widerface.py --trained_model "{}" --network {}\
         && cd ./widerface_evaluate \
         && python3 setup.py build_ext --inplace \
         && python3 evaluation.py -e {} \
