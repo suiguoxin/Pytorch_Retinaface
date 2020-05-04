@@ -281,7 +281,7 @@ def evaluation(pred, gt_path, iou_thresh=0.5, experiment_data_dir=''):
     print("Hard   Val AP: {}".format(aps[2]))
     print("=================================================")
 
-    with open(os.path.join(experiment_data_dir, 'evaluation_result.json'), 'w') as outfile:
+    with open(os.path.join('..', args.experiment_data_dir, 'evaluation_result.json'), 'w') as outfile:
         json.dump({'easy':aps[0], 'medium':aps[1], 'hard':aps[2]}, outfile)
 
 if __name__ == '__main__':
@@ -293,7 +293,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    # with open(os.path.join(args.experiment_data_dir, 'evaluation_result.json'), 'w') as outfile:
+    # with open(os.path.join('..', args.experiment_data_dir, 'evaluation_result.json'), 'w') as outfile:
     #     json.dump({'easy':666, 'medium':666, 'hard':666}, outfile)
 
     evaluation(args.pred, args.gt, args.experiment_data_dir)
