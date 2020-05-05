@@ -1,2 +1,8 @@
+__pycache__/
 data
 weights
+experiment_data/
+widerface_evaluate/bbox.cpython-37m-x86_64-linux-gnu.so
+widerface_evaluate/box_overlaps.c
+widerface_evaluate/build/
+widerface_evaluate/widerface_txt/        

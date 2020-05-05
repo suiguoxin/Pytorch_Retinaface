@@ -51,8 +51,9 @@ if __name__ == '__main__':
     model = load_model(model, args.trained_model, args.cpu)
 
     def evaluator(model, level='easy'):
-        torch.save(model.state_dict(), args.trained_model)
-        evaluation_resut = evaluate(trained_model=args.trained_model, network=args.network, experiment_data_dir=args.experiment_data_dir)
+        tmp_model_path = os.path.join(args.experiment_data_dir, 'tmp_model.pth')
+        torch.save(model.state_dict(), tmp_model_path)
+        evaluation_resut = evaluate(trained_model=tmp_model_path, network=args.network, experiment_data_dir=args.experiment_data_dir)
 
         return evaluation_resut[level]
     
