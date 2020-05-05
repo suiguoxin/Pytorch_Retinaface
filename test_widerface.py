@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser(description='Retinaface')
 
 parser.add_argument('--sparsity', type=float, default=0.3, help='sparsity')
 parser.add_argument('--cool-down-rate', type=float, default=0.9, help='cool down rate')
-parser.add_argument('--test-rate', type=float, default=0.1, help='subset rate for testing')
+# parser.add_argument('--test-rate', type=float, default=0.001, help='subset rate for testing')
 parser.add_argument('--experiment-data-dir', type=str,
                     default='/mnt/nfs-storage/users/sgx/Retinaface/experiment_data/', help='For saving experiment data')
 
@@ -102,7 +102,8 @@ if __name__ == '__main__':
     _t = {'forward_pass': Timer(), 'misc': Timer()}
 
     # testing begin
-    for i, img_name in enumerate(test_dataset[:int(num_images*args.test_rate)]):
+    # for i, img_name in enumerate(test_dataset[:int(num_images*args.test_rate)]):
+    for i, img_name in enumerate(test_dataset):
         image_path = testset_folder + img_name
         img_raw = cv2.imread(image_path, cv2.IMREAD_COLOR)
         img = np.float32(img_raw)
