@@ -51,8 +51,10 @@ if __name__ == '__main__':
     model = load_model(model, args.trained_model, args.cpu)
 
     def evaluator(model, level='easy'):
-        tmp_model_path = os.path.join(args.experiment_data_dir, 'tmp_model.pth')
-        torch.save(model.state_dict(), tmp_model_path)
+        # tmp_model_path = os.path.join(args.experiment_data_dir, 'tmp_model.pth')
+        # torch.save(model.state_dict(), tmp_model_path)
+        # evaluation_resut = evaluate(trained_model=tmp_model_path, network=args.network, experiment_data_dir=args.experiment_data_dir)
+        tmp_model_path = os.path.join(args.experiment_data_dir, 'model.pth')
         evaluation_resut = evaluate(trained_model=tmp_model_path, network=args.network, experiment_data_dir=args.experiment_data_dir)
 
         return evaluation_resut[level]
@@ -66,10 +68,10 @@ if __name__ == '__main__':
         model, configure_list, evaluator=evaluator, cool_down_rate=args.cool_down_rate, experiment_data_dir=args.experiment_data_dir)
     pruner.compress()
 
-    pruner.export_model(os.path.join(args.experiment_data_dir, 'model.pth'), os.path.join(args.experiment_data_dir, 'mask.pth')) 
+    pruner.export_model(os.path.join(args.experiment_data_dir, 'model_final.pth'), os.path.join(args.experiment_data_dir, 'mask_final.pth')) 
     
-    model = RetinaFace(cfg=cfg, phase = 'test')
-    model_pruned = load_model(model, os.path.join(args.experiment_data_dir, 'model.pth'), args.cpu)
+    # model = RetinaFace(cfg=cfg, phase = 'test')
+    # model_pruned = load_model(model, os.path.join(args.experiment_data_dir, 'model.pth'), args.cpu)
     
-    evaluation_result = evaluator(model_pruned)
-    print('Evaluation result : %s' % evaluation_result)
+    # evaluation_result = evaluator(model_pruned)
+    # print('Evaluation result : %s' % evaluation_result)

@@ -20,6 +20,7 @@ parser.add_argument('--cool-down-rate', type=float, default=0.9, help='cool down
 # parser.add_argument('--test-rate', type=float, default=0.001, help='subset rate for testing')
 parser.add_argument('--experiment-data-dir', type=str,
                     default='/mnt/nfs-storage/users/sgx/Retinaface/experiment_data/', help='For saving experiment data')
+parser.add_argument('--log-interval', type=int, default=25, help='Interval to show test log info')                   
 
 parser.add_argument('-m', '--trained_model', default='./weights/Resnet50_Final.pth',
                     type=str, help='Trained state_dict file path to open')
@@ -198,7 +199,8 @@ if __name__ == '__main__':
                 line = str(x) + " " + str(y) + " " + str(w) + " " + str(h) + " " + confidence + " \n"
                 fd.write(line)
 
-        print('im_detect: {:d}/{:d} forward_pass_time: {:.4f}s misc: {:.4f}s'.format(i + 1, num_images, _t['forward_pass'].average_time, _t['misc'].average_time))
+        if i % args.log_interval == 0:
+            print('im_detect: {:d}/{:d} forward_pass_time: {:.4f}s misc: {:.4f}s'.format(i + 1, num_images, _t['forward_pass'].average_time, _t['misc'].average_time))
 
         # save image
         if args.save_image:

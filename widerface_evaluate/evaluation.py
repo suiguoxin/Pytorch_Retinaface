@@ -293,7 +293,4 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    # with open(os.path.join('..', args.experiment_data_dir, 'evaluation_result.json'), 'w') as outfile:
-    #     json.dump({'easy':666, 'medium':666, 'hard':666}, outfile)
-
     evaluation(args.pred, args.gt, experiment_data_dir=args.experiment_data_dir)
