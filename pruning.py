@@ -75,7 +75,7 @@ if __name__ == '__main__':
                         os.path.join(args.experiment_data_dir, 'mask_final.pth'))
 
     model = RetinaFace(cfg=cfg, phase = 'test')
-    model_pruned = load_model(model, os.path.join(args.experiment_data_dir, 'model.pth'), args.cpu)
+    model_pruned = load_model(model, os.path.join(args.experiment_data_dir, 'model_final.pth'), args.cpu)
 
     evaluation_result = evaluator(model_pruned)
     print('Evaluation result : %s' % evaluation_result)
