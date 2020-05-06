@@ -17,7 +17,7 @@ def evaluate(trained_model, network, experiment_data_dir):
         trained state_dict file path to open
     network : str
         Backbone network, mobile0.25 or resnet50
-        
+
     Returns:
     -------
     json
@@ -47,18 +47,21 @@ if __name__ == '__main__':
         cfg = cfg_re50
 
     # load pre-trained model
-    model = RetinaFace(cfg=cfg, phase = 'test')
+    model = RetinaFace(cfg=cfg, phase='test')
     model = load_model(model, args.trained_model, args.cpu)
 
-    def evaluator(model, level='easy'):
+    def evaluator(model, level='average'):
         # tmp_model_path = os.path.join(args.experiment_data_dir, 'tmp_model.pth')
         # torch.save(model.state_dict(), tmp_model_path)
-        # evaluation_resut = evaluate(trained_model=tmp_model_path, network=args.network, experiment_data_dir=args.experiment_data_dir)
+        # evaluation_result = evaluate(trained_model=tmp_model_path, network=args.network, experiment_data_dir=args.experiment_data_dir)
         tmp_model_path = os.path.join(args.experiment_data_dir, 'model.pth')
-        evaluation_resut = evaluate(trained_model=tmp_model_path, network=args.network, experiment_data_dir=args.experiment_data_dir)
+        evaluation_result = evaluate(
+            trained_model=tmp_model_path, network=args.network, experiment_data_dir=args.experiment_data_dir)
 
-        return evaluation_resut[level]
-    
+        if level == 'average':
+            return (evaluation_result['easy'] + evaluation_result['medium'] + evaluation_result['hard'])/3
+        return evaluation_result
+
     configure_list = [{
         'sparsity': args.sparsity,
         'op_types': ['default']
@@ -68,10 +71,14 @@ if __name__ == '__main__':
         model, configure_list, evaluator=evaluator, cool_down_rate=args.cool_down_rate, experiment_data_dir=args.experiment_data_dir)
     pruner.compress()
 
-    pruner.export_model(os.path.join(args.experiment_data_dir, 'model_final.pth'), os.path.join(args.experiment_data_dir, 'mask_final.pth')) 
-    
-    # model = RetinaFace(cfg=cfg, phase = 'test')
-    # model_pruned = load_model(model, os.path.join(args.experiment_data_dir, 'model.pth'), args.cpu)
-    
-    # evaluation_result = evaluator(model_pruned)
-    # print('Evaluation result : %s' % evaluation_result)
+    pruner.export_model(os.path.join(args.experiment_data_dir, 'model_final.pth'),
+                        os.path.join(args.experiment_data_dir, 'mask_final.pth'))
+
+    model = RetinaFace(cfg=cfg, phase = 'test')
+    model_pruned = load_model(model, os.path.join(args.experiment_data_dir, 'model.pth'), args.cpu)
+
+    evaluation_result = evaluator(model_pruned)
+    print('Evaluation result : %s' % evaluation_result)
+
+    with open(os.path.join(args.experiment_data_dir, 'best_performance.json'), 'w') as outfile:
+        json.dump(evaluation_result, outfile)
