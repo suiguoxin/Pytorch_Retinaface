@@ -51,6 +51,7 @@ if __name__ == '__main__':
     model = load_model(model, args.trained_model, args.cpu)
 
     def evaluator(model, level='average'):
+        # TODO: check model save / load error
         # tmp_model_path = os.path.join(args.experiment_data_dir, 'tmp_model.pth')
         # torch.save(model.state_dict(), tmp_model_path)
         # evaluation_result = evaluate(trained_model=tmp_model_path, network=args.network, experiment_data_dir=args.experiment_data_dir)
@@ -77,8 +78,6 @@ if __name__ == '__main__':
     model = RetinaFace(cfg=cfg, phase = 'test')
     model_pruned = load_model(model, os.path.join(args.experiment_data_dir, 'model_final.pth'), args.cpu)
 
+    # the performance of the best model will be saved in "evaluation_result.json"
     evaluation_result = evaluator(model_pruned)
     print('Evaluation result : %s' % evaluation_result)
-
-    with open(os.path.join(args.experiment_data_dir, 'best_performance.json'), 'w') as outfile:
-        json.dump(evaluation_result, outfile)
