@@ -16,15 +16,19 @@ from utils.timer import Timer
 parser = argparse.ArgumentParser(description='Retinaface')
 
 parser.add_argument('--sparsity', type=float, default=0.3, help='sparsity')
+parser.add_argument('--pruner', type=str, default='SimulatedAnnealingPruner')
+parser.add_argument('--pruning-mode', type=str, default='channel',
+                        help='pruning mode, channel or fine_grained')
 parser.add_argument('--cool-down-rate', type=float, default=0.9, help='cool down rate')
 # parser.add_argument('--test-rate', type=float, default=0.001, help='subset rate for testing')
 parser.add_argument('--experiment-data-dir', type=str,
                     default='/mnt/nfs-storage/users/sgx/Retinaface/experiment_data/', help='For saving experiment data')
 parser.add_argument('--log-interval', type=int, default=25, help='Interval to show test log info')                   
+parser.add_argument('--fine_tune', type=int, default=1, help='1 or 0')                   
 
-parser.add_argument('-m', '--trained_model', default='./weights/Resnet50_Final.pth',
+parser.add_argument('-m', '--trained_model', default='./weights/mobilenet0.25_Final.pth',
                     type=str, help='Trained state_dict file path to open')
-parser.add_argument('--network', default='resnet50', help='Backbone network mobile0.25 or resnet50')
+parser.add_argument('--network', default='mobile0.25', help='Backbone network mobile0.25 or resnet50')
 parser.add_argument('--origin_size', default=True, type=str, help='Whether use origin image size to evaluate')
 parser.add_argument('--save_folder', default='./widerface_evaluate/widerface_txt/', type=str, help='Dir to save txt results')
 parser.add_argument('--cpu', action="store_true", default=False, help='Use cpu inference')
