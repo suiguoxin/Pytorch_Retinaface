@@ -57,6 +57,7 @@ args = parser.parse_args()
 
 
 def train(net, cfg, resume_epoch):
+    torch.set_grad_enabled(True)
     rgb_mean = (104, 117, 123) # bgr order
     num_classes = 2
     img_dim = cfg['image_size']
@@ -333,6 +334,9 @@ def evaluate(net, cfg):
 
 
 if __name__ == '__main__':
+    if not os.path.exists(args.experiment_data_dir):
+            os.makedirs(args.experiment_data_dir)
+
     torch.manual_seed(0)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
