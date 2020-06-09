@@ -149,7 +149,7 @@ if __name__ == '__main__':
             device = torch.device("cpu" if args.cpu else "cuda")
             net = net.to(device)
             # data = torch.rand(1, 3, 560, 1024)
-            data = torch.rand(1,3, 640, 640)
+            data = torch.rand(1,3, 640, 480)
             data = data.to(device)
             gf = VisualGraph(net,data)
             FLOPS = get_flops(net, data)
@@ -174,18 +174,15 @@ if __name__ == '__main__':
                     in_prune_ratio[name] = 1
                 pruned_flops += FLOPS[name] * remained * in_prune_ratio[name]
 
-            flops[pruner].append(pruned_flops)
+            flops[pruner].append(int(pruned_flops))
 
-    with open(os.path.join('experiment_data/flops.json'), 'w+') as jsonfile:
-        json.dump({'performances': performances, 'flops': flops}, jsonfile)
 
-    
     for pruner in pruners:
         with open(os.path.join('experiment_data/flops_{}.csv'.format(pruner)), 'w+') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=' ',
                                 quotechar='|', quoting=csv.QUOTE_MINIMAL)
             writer = csv.writer(csvfile)
-            writer.writerow(['accuracy', 'flops'])
+            writer.writerow(['accuracy', 'flops', 'sparsity'])
             for idx, performance in enumerate(performances[pruner]):
-                writer.writerow([performance, flops[pruner][idx]])
+                writer.writerow([performance, flops[pruner][idx], sparsities[idx]])
             
