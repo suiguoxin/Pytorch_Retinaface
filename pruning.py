@@ -33,7 +33,8 @@ parser.add_argument('--sparsity', type=float, default=0.3, help='sparsity')
 parser.add_argument('--pruner', type=str, default='SimulatedAnnealingPruner')
 parser.add_argument('--pruning-mode', type=str, default='channel',
                         help='pruning mode, channel or fine_grained')
-parser.add_argument('--cool-down-rate', type=float, default=0.9, help='cool down rate')
+parser.add_argument('--cool-down-rate', type=float, default=0.9, help='cool down rate for SimulatedAnnealingPruner')
+parser.add_argument('--pruning-step', type=float, default=0.05, help='pruning step for NetAdaptPruner')
 # parser.add_argument('--test-rate', type=float, default=0.001, help='subset rate for testing')
 parser.add_argument('--experiment-data-dir', type=str,
                     default='/mnt/nfs-storage/users/sgx/Retinaface/experiment_data/', help='For saving experiment data')
@@ -395,7 +396,7 @@ if __name__ == '__main__':
             experiment_data_dir=args.experiment_data_dir)
     elif args.pruner == 'NetAdaptPruner':
         pruner = NetAdaptPruner(model, config_list, fine_tuner=fine_tuner, evaluator=evaluator,
-                                pruning_mode='channel', experiment_data_dir=args.experiment_data_dir)
+                                pruning_mode='channel', pruning_step=args.pruning_step, experiment_data_dir=args.experiment_data_dir)
 
     
     model_masked = pruner.compress()
