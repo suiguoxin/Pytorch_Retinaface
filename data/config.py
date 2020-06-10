@@ -13,7 +13,7 @@ cfg_mnet = {
     'epoch': 250,
     'decay1': 190,
     'decay2': 220,
-    'image_size': 480,
+    'image_size': 640,
     'pretrain': True,
     'return_layers': {'stage1': 1, 'stage2': 2, 'stage3': 3},
     'in_channel': 32,

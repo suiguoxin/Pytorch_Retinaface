@@ -114,8 +114,8 @@ if __name__ == '__main__':
         img = np.float32(img_raw)
 
         # testing scale
-        target_size = 1600
-        max_size = 2150
+        target_size = 640 #1600
+        max_size = 640 #2150
         im_shape = img.shape
         im_size_min = np.min(im_shape[0:2])
         im_size_max = np.max(im_shape[0:2])
@@ -123,8 +123,8 @@ if __name__ == '__main__':
         # prevent bigger axis from being more than max_size:
         if np.round(resize * im_size_max) > max_size:
             resize = float(max_size) / float(im_size_max)
-        if args.origin_size:
-            resize = 1
+        # if args.origin_size:
+        #     resize = 1
 
         if resize != 1:
             img = cv2.resize(img, None, None, fx=resize, fy=resize, interpolation=cv2.INTER_LINEAR)

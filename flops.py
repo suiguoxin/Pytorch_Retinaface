@@ -133,11 +133,11 @@ if __name__ == '__main__':
         performances[pruner] = []
         flops[pruner] = []
         for sparsity in sparsities:
-            with open(os.path.join('experiment_data/', pruner, str(sparsity).replace('.', ''), 'performance.json'), 'r') as jsonfile:
+            with open(os.path.join('experiment_data/archive640/', pruner, str(sparsity).replace('.', ''), 'performance.json'), 'r') as jsonfile:
                 performance = json.load(jsonfile)
                 performances[pruner].append(performance['finetuned'])
 
-            sparsity_file = os.path.join('experiment_data/', pruner, str(sparsity).replace('.', ''), 'search_result.json')
+            sparsity_file = os.path.join('experiment_data/archive640/', pruner, str(sparsity).replace('.', ''), 'search_result.json')
             
             # FLOPS calc
             net = RetinaFace(cfg=cfg)
@@ -149,7 +149,7 @@ if __name__ == '__main__':
             device = torch.device("cpu" if args.cpu else "cuda")
             net = net.to(device)
             # data = torch.rand(1, 3, 560, 1024)
-            data = torch.rand(1,3, 640, 480)
+            data = torch.rand(1,3, 640, 640)
             data = data.to(device)
             gf = VisualGraph(net,data)
             FLOPS = get_flops(net, data)
@@ -179,8 +179,6 @@ if __name__ == '__main__':
 
     for pruner in pruners:
         with open(os.path.join('experiment_data/flops_{}.csv'.format(pruner)), 'w+') as csvfile:
-            spamwriter = csv.writer(csvfile, delimiter=' ',
-                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
             writer = csv.writer(csvfile)
             writer.writerow(['accuracy', 'flops', 'sparsity'])
             for idx, performance in enumerate(performances[pruner]):
