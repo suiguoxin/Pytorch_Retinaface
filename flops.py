@@ -7,11 +7,11 @@ import csv
 import shutil
 import torch.backends.cudnn as cudnn
 import numpy as np
-from data import cfg_mnet, cfg_re50
+from data import cfg_mnet, cfg_re50, cfg_mnet_highway
 from layers.functions.prior_box import PriorBox
 from utils.nms.py_cpu_nms import py_cpu_nms
 import cv2
-from models.retinaface import RetinaFace
+# from models.retinaface_highway import RetinaFace
 from utils.box_utils import decode, decode_landm
 from utils.timer import Timer
 from utils.model_parse import  mask_decorater
@@ -20,17 +20,22 @@ from utils.graph_from_trace import VisualGraph
 
 
 parser = argparse.ArgumentParser(description='Retinaface')
-parser.add_argument('-m', '--trained_model', default='./weights/mobilenet0.25_Final.pth')
-parser.add_argument('--network', default='mobile0.25', help='Backbone network mobile0.25 or resnet50')
+parser.add_argument('-m', '--trained_model', default='./weights/mobilenet0.25_Final.pth') 
+parser.add_argument('--network', default='mobile0.25', help='Backbone network mobile0.25, resnet50, or mobile0.25_highway')
 parser.add_argument('--cpu', action="store_true", default=False, help='Use cpu inference')
 # parser.add_argument('--sparsity_file', required=True, help='config file for the pruner')
 args = parser.parse_args()
+
+if args.network == 'mobile0.25_highway':
+    args.trained_model = './weights/scratch_epoch_250.pth.tar'
 
 cfg = None
 if args.network == "mobile0.25":
     cfg = cfg_mnet
 elif args.network == "resnet50":
     cfg = cfg_re50
+elif args.network == "mobile0.25_highway"
+        cfg = cfg_mnet_highway
 
 
 def check_keys(model, pretrained_state_dict):
@@ -140,6 +145,11 @@ if __name__ == '__main__':
             sparsity_file = os.path.join('experiment_data/archive640/', pruner, str(sparsity).replace('.', ''), 'search_result.json')
             
             # FLOPS calc
+            # load pre-trained model
+            if args.network == "mobile0.25":
+                from models.retinaface import RetinaFace
+            elif args.network == "mobile0.25_highway":
+                from models.retinaface_highway import RetinaFace
             net = RetinaFace(cfg=cfg)
             net = load_model(net, args.trained_model, args.cpu)
 
@@ -149,7 +159,7 @@ if __name__ == '__main__':
             device = torch.device("cpu" if args.cpu else "cuda")
             net = net.to(device)
             # data = torch.rand(1, 3, 560, 1024)
-            data = torch.rand(1,3, 640, 640)
+            data = torch.rand(1,3, 640, 480)
             data = data.to(device)
             gf = VisualGraph(net,data)
             FLOPS = get_flops(net, data)

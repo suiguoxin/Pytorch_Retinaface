@@ -11,12 +11,9 @@ import cv2
 from nni.compression.torch import L1FilterPruner, SimulatedAnnealingPruner, NetAdaptPruner
 
 from data import cfg_mnet, cfg_re50
-from data import WiderFaceDetection, detection_collate, preproc, cfg_mnet, cfg_re50
-from models.retinaface import RetinaFace
-
+from data import WiderFaceDetection, detection_collate, preproc, cfg_mnet, cfg_re50, cfg_mnet_highway
 from layers.modules import MultiBoxLoss
 from layers.functions.prior_box import PriorBox
-from models.retinaface import RetinaFace
 import time
 import datetime
 
@@ -55,6 +52,9 @@ parser.add_argument('--keep_top_k', default=750, type=int, help='keep_top_k')
 parser.add_argument('-s', '--save_image', action="store_true", default=False, help='show detection results')
 parser.add_argument('--vis_thres', default=0.5, type=float, help='visualization_threshold')
 args = parser.parse_args()
+
+if args.network == 'mobile0.25_highway':
+    args.trained_model = './weights/scratch_epoch_250.pth.tar'
 
 
 def train(net, cfg, resume_epoch):
@@ -216,8 +216,8 @@ def evaluate(net, cfg):
         img = np.float32(img_raw)
 
         # testing scale
-        target_size = 1600
-        max_size = 2150
+        target_size = 640 # 1600
+        max_size = 640 #2150
         im_shape = img.shape
         im_size_min = np.min(im_shape[0:2])
         im_size_max = np.max(im_shape[0:2])
@@ -225,8 +225,8 @@ def evaluate(net, cfg):
         # prevent bigger axis from being more than max_size:
         if np.round(resize * im_size_max) > max_size:
             resize = float(max_size) / float(im_size_max)
-        if args.origin_size:
-            resize = 1
+        # if args.origin_size:
+        #     resize = 1
 
         if resize != 1:
             img = cv2.resize(img, None, None, fx=resize, fy=resize, interpolation=cv2.INTER_LINEAR)
@@ -346,8 +346,15 @@ if __name__ == '__main__':
         cfg = cfg_mnet
     elif args.network == "resnet50":
         cfg = cfg_re50
+    elif args.network == "mobile0.25_highway":
+        cfg = cfg_mnet_highway
 
     # load pre-trained model
+    if args.network == "mobile0.25":
+        from models.retinaface import RetinaFace
+    elif args.network == "mobile0.25_highway":
+        from models.retinaface_highway import RetinaFace
+    
     model = RetinaFace(cfg=cfg, phase='test')
     model = load_model(model, args.trained_model, args.cpu)
     model.to(device)
@@ -378,7 +385,7 @@ if __name__ == '__main__':
     print('Evaluation result (original model): %s' % evaluation_result)
     result['original'] = evaluation_result
 
-
+'''
     if args.pruning_mode == 'channel':
         op_types = ['Conv2d']
     elif args.pruning_mode == 'fine_grained':
@@ -415,3 +422,4 @@ if __name__ == '__main__':
 
     with open(os.path.join(args.experiment_data_dir, 'performance.json'), 'w') as f:
         json.dump(result, f)
+'''
