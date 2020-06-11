@@ -34,7 +34,7 @@ if args.network == "mobile0.25":
     cfg = cfg_mnet
 elif args.network == "resnet50":
     cfg = cfg_re50
-elif args.network == "mobile0.25_highway"
+elif args.network == "mobile0.25_highway":
         cfg = cfg_mnet_highway
 
 

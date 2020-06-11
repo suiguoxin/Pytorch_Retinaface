@@ -46,13 +46,13 @@ class LandmarkHead(nn.Module):
 
         return out.view(out.shape[0], -1, 10)
 
-class RetinaFace(nn.Module):
+class RetinaFaceHighway(nn.Module):
     def __init__(self, cfg = None, phase = 'train'):
         """
         :param cfg:  Network related settings.
         :param phase: train or test.
         """
-        super(RetinaFace,self).__init__()
+        super(RetinaFaceHighway,self).__init__()
         self.phase = phase
         backbone = None
         if cfg['name'] == 'mobilenet0.25':

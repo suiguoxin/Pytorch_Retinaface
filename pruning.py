@@ -10,7 +10,6 @@ import math
 import cv2
 from nni.compression.torch import L1FilterPruner, SimulatedAnnealingPruner, NetAdaptPruner
 
-from data import cfg_mnet, cfg_re50
 from data import WiderFaceDetection, detection_collate, preproc, cfg_mnet, cfg_re50, cfg_mnet_highway
 from layers.modules import MultiBoxLoss
 from layers.functions.prior_box import PriorBox
@@ -352,10 +351,11 @@ if __name__ == '__main__':
     # load pre-trained model
     if args.network == "mobile0.25":
         from models.retinaface import RetinaFace
+        model = RetinaFace(cfg=cfg, phase='test')
     elif args.network == "mobile0.25_highway":
-        from models.retinaface_highway import RetinaFace
+        from models.retinaface_highway import RetinaFaceHighway
+        model = RetinaFaceHighway(cfg=cfg, phase='test')
     
-    model = RetinaFace(cfg=cfg, phase='test')
     model = load_model(model, args.trained_model, args.cpu)
     model.to(device)
 
