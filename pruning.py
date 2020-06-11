@@ -385,7 +385,7 @@ if __name__ == '__main__':
     print('Evaluation result (original model): %s' % evaluation_result)
     result['original'] = evaluation_result
 
-'''
+
     if args.pruning_mode == 'channel':
         op_types = ['Conv2d']
     elif args.pruning_mode == 'fine_grained':
@@ -422,4 +422,3 @@ if __name__ == '__main__':
 
     with open(os.path.join(args.experiment_data_dir, 'performance.json'), 'w') as f:
         json.dump(result, f)
-'''

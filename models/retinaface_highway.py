@@ -5,10 +5,10 @@ import torchvision.models._utils as _utils
 import torch.nn.functional as F
 from collections import OrderedDict
 
-from models.net import MobileNetV1 as MobileNetV1
-from models.net import SqueezeNetV1 as SqueezeNet
-from models.net import FPN as FPN
-from models.net import SSH as SSH
+from models.net_highway import MobileNetV1 as MobileNetV1
+from models.net_highway import SqueezeNetV1 as SqueezeNet
+from models.net_highway import FPN as FPN
+from models.net_highway import SSH as SSH
 
 
 
